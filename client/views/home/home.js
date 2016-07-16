@@ -18,13 +18,21 @@ Template.home.events({
 });
 
 Template.home.rendered = function() {
-  var seriesData = [];
-  var frames = Frames.find({"doc_type": "high_doc"}, {sort: {hour: -1}});
+    var seriesDataTemp = [];
+    var seriesDataBrix = [];
+    var seriesDataAlco = [];
+    var frames = Frames.find({"doc_type": "high_doc"}, {sort: {hour: -1}});
 
-  frames.forEach(function(frame) {
-      var dataPoint = [frame.timestamp, frame.flow];
-    seriesData.push(dataPoint);
-  });
+    frames.forEach(function(frame) {
+        var dataPointTemp = [frame.timestamp, frame.temp];
+        seriesDataTemp.push(dataPointTemp);
+
+        var dataPointBrix = [frame.timestamp, frame.brix];
+        seriesDataBrix.push(dataPointBrix);
+
+        var dataPointAlco = [frame.timestamp, frame.alco];
+        seriesDataAlco.push(dataPointAlco);
+    });
 
   chartOptions = {
 
@@ -52,31 +60,22 @@ Template.home.rendered = function() {
       yAxis: [{ // Primary yAxis
           title: {
               text: 'Temperature',
-              style: {
-                  color: Highcharts.getOptions().colors[2]
-              }
+              
           },
           labels: {
               format: '{value}°C',
-              style: {
-                  color: Highcharts.getOptions().colors[2]
-              }
+              
           },
-          min: 0,
           opposite: true
       }, { // Secondary yAxis
           gridLineWidth: 0,
           title: {
               text: 'Brix',
-              style: {
-                  color: Highcharts.getOptions().colors[0]
-              }
+              
           },
           labels: {
               format: '{value} °B',
-              style: {
-                  color: Highcharts.getOptions().colors[0]
-              }
+              
           }
 
       }, { // Tertiary yAxis
@@ -97,8 +96,7 @@ Template.home.rendered = function() {
       }],
       tooltip: {
           headerFormat: '<b>{series.name}</b><br>',
-          pointFormat: '{point.x:%e. %b}: {point.y:.2f} m',
-          shared: true
+          pointFormat: '{point.x:%e. %b}: {point.y:.2f}'
       },
 
       plotOptions: {
@@ -112,52 +110,14 @@ Template.home.rendered = function() {
       series: [{
           name: 'Temperature',
           yAxis: 1,
-          data: seriesData
+          data: seriesDataTemp
       }, {
           name: 'Brix',
           yAxis: 2,
-          data: [
-              [Date.UTC(2016, 6, 15, 17, 1, 0), 0],
-              [Date.UTC(2016, 6, 15, 17, 1, 5), 20],
-              [Date.UTC(2016, 6, 15, 17, 1, 10), 21],
-              [Date.UTC(2016, 6, 15, 17, 1, 15), 22],
-              [Date.UTC(2016, 6, 15, 17, 1, 20), 23],
-              [Date.UTC(2016, 6, 15, 17, 1, 25), 24],
-              [Date.UTC(2016, 6, 15, 17, 1, 35), 25],
-              [Date.UTC(2016, 6, 15, 17, 1, 40), 26],
-              [Date.UTC(2016, 6, 15, 17, 1, 45), 27],
-              [Date.UTC(2016, 6, 15, 17, 1, 55), 31],
-              [Date.UTC(2016, 6, 15, 17, 2, 2), 35],
-              [Date.UTC(2016, 6, 15, 17, 2, 10), 40],
-              [Date.UTC(2016, 6, 15, 17, 2, 15), 42],
-              [Date.UTC(2016, 6, 15, 17, 2, 18), 45],
-              [Date.UTC(2016, 6, 15, 17, 2, 25), 50],
-              [Date.UTC(2016, 6, 15, 17, 2, 32), 52],
-              [Date.UTC(2016, 6, 15, 17, 2, 43), 55],
-              [Date.UTC(2016, 6, 15, 17, 2, 50), 60]
-          ]
+          data: seriesDataBrix
       }, {
           name: 'Alcohol',
-          data: [
-              [Date.UTC(2016, 6, 15, 17, 1, 0), 0],
-              [Date.UTC(2016, 6, 15, 17, 1, 5), 10],
-              [Date.UTC(2016, 6, 15, 17, 1, 10), 11],
-              [Date.UTC(2016, 6, 15, 17, 1, 15), 12],
-              [Date.UTC(2016, 6, 15, 17, 1, 20), 13],
-              [Date.UTC(2016, 6, 15, 17, 1, 25), 14],
-              [Date.UTC(2016, 6, 15, 17, 1, 35), 15],
-              [Date.UTC(2016, 6, 15, 17, 1, 40), 16],
-              [Date.UTC(2016, 6, 15, 17, 1, 45), 27],
-              [Date.UTC(2016, 6, 15, 17, 1, 55), 31],
-              [Date.UTC(2016, 6, 15, 17, 2, 2), 45],
-              [Date.UTC(2016, 6, 15, 17, 2, 10), 50],
-              [Date.UTC(2016, 6, 15, 17, 2, 15), 22],
-              [Date.UTC(2016, 6, 15, 17, 2, 18), 35],
-              [Date.UTC(2016, 6, 15, 17, 2, 25), 30],
-              [Date.UTC(2016, 6, 15, 17, 2, 32), 32],
-              [Date.UTC(2016, 6, 15, 17, 2, 43), 25],
-              [Date.UTC(2016, 6, 15, 17, 2, 50), 10]
-          ]
+          data: seriesDataAlco
       }]
   };
 
