@@ -1,5 +1,5 @@
-Meteor.subscribe("xbees", function() {
-    XBees.find({}).observe({
+Meteor.subscribe("frames", function() {
+    Frames.find({}).observe({
         changed: function(id, fields) {
             Meteor.call("UpdateSeriesData");
         },
